@@ -70,11 +70,8 @@ public class YouTubeScraper {
 			process.query("input[type='text']").get().setValue(userchoice);
 			process.query("input[type='submit']").get().click();
 			TimeUnit.SECONDS.sleep(15);
-			//docu.show();
 			String a = docu.getDocument().queryAll("div[class='col-lg-8']").toString();
 			a=a.substring(584);
-			//System.out.println(a);
-			//System.out.println(a.substring(0, 215));
 			a=a.substring(0,210);
 			//System.out.println(a);
 			a=a.substring(20, 99);
@@ -98,15 +95,6 @@ public class YouTubeScraper {
 			//System.out.println(f);
 			//System.out.println(result);
 			URL l = new URL(finalur);
-			//for(int j=0; j!=-1;)
-			{
-			//	int k=fin.lastIndexOf("|");
-			//	fin.deleteCharAt(k);
-			//	break;
-			}
-			
-		    //title[ch] = title[ch].replaceAll(" |", "");
-			//System.out.println(title[ch]);
 			String path = "C:\\Downloads\\"+result+".mp3";
 			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
 			long fileSize = httpConnection.getContentLength();
