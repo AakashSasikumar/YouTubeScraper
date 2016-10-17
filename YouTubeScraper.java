@@ -107,7 +107,7 @@ public class YouTubeScraper {
 			
 		    //title[ch] = title[ch].replaceAll(" |", "");
 			//System.out.println(title[ch]);
-			String path = "C:\\Users\\Aakash\\Desktop\\TestFolder\\"+result+".mp3";
+			String path = "C:\\Downloads\\"+result+".mp3";
 			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
 			long fileSize = httpConnection.getContentLength();
 			System.out.println("Size : "+fileSize/1048576f+" mb");
