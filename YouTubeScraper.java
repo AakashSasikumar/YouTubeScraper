@@ -64,7 +64,7 @@ public class YouTubeScraper {
 			//Start of scraping the second website
 					
 			BrowserEngine browser = BrowserFactory.getWebKit();
-			//java.util.logging.Logger.getLogger("com.ui4j").setLevel(Level.OFF);
+//Remove comments to stop logging--->//java.util.logging.Logger.getLogger("com.ui4j").setLevel(Level.OFF);
 			com.ui4j.api.browser.Page docu = browser.navigate("http://www.listentoyoutube.com/");
 			com.ui4j.api.dom.Document process = docu.getDocument();
 			process.query("input[type='text']").get().setValue(userchoice);
@@ -114,7 +114,7 @@ public class YouTubeScraper {
 			File abc = new File(path);
 			TimeUnit.SECONDS.sleep(5);
 			try
-			{
+			{	System.out.println("Downloading...");
 				FileUtils.copyURLToFile(l, abc);
 				System.out.println("Download Complete");
 			}
