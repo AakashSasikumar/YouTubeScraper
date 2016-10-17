@@ -14,3 +14,20 @@ Future Plans:
 1. Fetch album art and add it to the downloaded mp3 file(using id3 editing libraries)
 
 2. Add Album name, artist name, etc...(using id3 editors)
+
+3. Queueing(Multiple songs)
+
+4. Add feature to let user choose download location
+
+5. 
+
+
+How to use the jar file:
+
+1. Download it, store it wherever you want to
+
+2. Execute it using the java -jar command in terminal
+
+3. Follow the directions
+
+4. The song will download in the same directory as the jar file.
