@@ -23,9 +23,9 @@ public class YouTubeScraper {
 		System.out.println("\t\t\t\t\t\t\tYouTube Downloader");
 		System.out.println("Enter the song name");
 		Scanner in = new Scanner(System.in);
-		String name = in.nextLine();
+		String songName = in.nextLine();
 		//creating the url necessary to scrape
-		String murl = "https://www.youtube.com/results?search_query="+name;
+		String murl = "https://www.youtube.com/results?search_query="+songName;
 		Document website = Jsoup.connect(murl).get();
 		//closing in on the target,(class name is lockup-title)
 		Elements subdiv = website.select("h3.yt-lockup-title>a");
@@ -97,11 +97,11 @@ public class YouTubeScraper {
 			String result = java.net.URLDecoder.decode(f, "UTF-8");
 			//There was an error when the file name was not in the url format, so had to encode and decode it
 			URL l = new URL(finalur);
-			String path = "C:\\Downloads\\"+result+".mp3";
+			String downloadPath = "C:\\Downloads\\"+result+".mp3";
 			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
 			long fileSize = httpConnection.getContentLength();
 			System.out.println("Size : "+fileSize/1048576f+" mb");
-			File abc = new File(path);
+			File abc = new File(downloadPath);
 			TimeUnit.SECONDS.sleep(5);
 			try
 			{	System.out.println("Downloading...");
