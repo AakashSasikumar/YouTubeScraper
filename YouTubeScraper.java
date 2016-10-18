@@ -22,28 +22,28 @@ public class YouTubeScraper {
 	public static void main(String[] args) throws IOException, InterruptedException{
 		System.out.println("\t\t\t\t\t\t\tYouTube Downloader");
 		System.out.println("Enter the song name");
-		Scanner in = new Scanner(System.in);
-		String songName = in.nextLine();
+		Scanner scannerIn = new Scanner(System.in);
+		String songName = scannerIn.nextLine();
 		//creating the url necessary to scrape
-		String murl = "https://www.youtube.com/results?search_query="+songName;
-		Document website = Jsoup.connect(murl).get();
+		String youTubeURL = "https://www.youtube.com/results?search_query="+songName;
+		Document website = Jsoup.connect(youTubeURL).get();
 		//closing in on the target,(class name is lockup-title)
-		Elements subdiv = website.select("h3.yt-lockup-title>a");
+		Elements subElements = website.select("h3.yt-lockup-title>a");
 		//System.out.println(subdiv);---checking to see if .select worked 
-		String[] seplinks = new String[subdiv.size()];
-		String[] title = new String[subdiv.size()];
+		String[] seplinks = new String[subElements.size()];
+		String[] title = new String[subElements.size()];
 		int i =0;
-		for(Element temp:subdiv)
-		{	String a = temp.attr("href");
+		for(Element subElement:subElements)
+		{	String subElementHRef = subElement.attr("href");
 		//youtube has playlists, and these contail "list" in the URL and we dont need these playlists
-			if(a.contains("list"))
+			if(subElementHRef.contains("list"))
 			{
 				continue;
 			}
 			else{
 				//adding the non playlist URL's into my link array
-				seplinks[i] = "https://www.youtube.com"+temp.attr("href");
-				title[i] = temp.text();
+				seplinks[i] = "https://www.youtube.com"+subElement.attr("href");
+				title[i] = subElement.text();
 				i++;
 			}
 		}
@@ -52,9 +52,9 @@ public class YouTubeScraper {
 				//System.out.println(seplinks[j]);---checking to see if the links are proper
 			}
 			System.out.println("Please enter your choice");
-			int ch = in.nextInt();
-			ch--;
-			String userchoice = seplinks[ch];
+			int choice = scannerIn.nextInt();
+			choice--;
+			String userchoice = seplinks[choice];
 			//System.out.println(userchoice);---final URL selected
 			
 			
@@ -65,13 +65,13 @@ public class YouTubeScraper {
 					
 			BrowserEngine browser = BrowserFactory.getWebKit();
 //Remove comments to stop logging--->//java.util.logging.Logger.getLogger("com.ui4j").setLevel(Level.OFF);
-			com.ui4j.api.browser.Page docu = browser.navigate("http://www.listentoyoutube.com/");
-			com.ui4j.api.dom.Document process = docu.getDocument();
+			com.ui4j.api.browser.Page listenToYouTubePage = browser.navigate("http://www.listentoyoutube.com/");
+			com.ui4j.api.dom.Document process = listenToYouTubePage.getDocument();
 			process.query("input[type='text']").get().setValue(userchoice);
 			process.query("input[type='submit']").get().click();
 			TimeUnit.SECONDS.sleep(15);
-			String a = docu.getDocument().queryAll("div[class='col-lg-8']").toString();
-			a=a.substring(584);
+			String listentoyoutubeString = listenToYouTubePage.getDocument().queryAll("div[class='col-lg-8']").toString();
+			listentoyoutubeString=listentoyoutubeString.substring(584);
 			/*There are three parameters
 			 * 1. The Server number
 			 * 2.The hash
@@ -81,42 +81,42 @@ public class YouTubeScraper {
 			 * 
 			 * 
 			 * */
-			a=a.substring(0,210);
-			a=a.substring(20, 99);
-			String[] temp = a.split("&");
-			String srv = temp[0].substring(3);
-			String hash = temp[1].substring(9, 68);
+			listentoyoutubeString=listentoyoutubeString.substring(0,210);
+			listentoyoutubeString=listentoyoutubeString.substring(20, 99);
+			String[] tempListentoyoutubeString = listentoyoutubeString.split("&");
+			String srv = tempListentoyoutubeString[0].substring(3);
+			String hash = tempListentoyoutubeString[1].substring(9, 68);
 			hash=hash.replace("%",  "");
 			/*found a pattern in the final url that includes all the three parameters, so I generated it on my own
 			 */
-			String finalur = "http://srv"+srv+".listentoyoutube.com/download/"+hash+"==/"+URLEncoder.encode(title[ch],"UTF-8")+".mp3";
-			String f = new String(URLEncoder.encode(title[ch], "UTF-8"));
-			f=f.replaceAll("%7C+","");
-			f=f.replaceAll("%22", "");
-			f=f.replaceAll("%3F", "");
-			String result = java.net.URLDecoder.decode(f, "UTF-8");
+			String finalURL = "http://srv"+srv+".listentoyoutube.com/download/"+hash+"==/"+URLEncoder.encode(title[choice],"UTF-8")+".mp3";
+			String tempChoiceString = new String(URLEncoder.encode(title[choice], "UTF-8"));
+			tempChoiceString=tempChoiceString.replaceAll("%7C+","");
+			tempChoiceString=tempChoiceString.replaceAll("%22", "");
+			tempChoiceString=tempChoiceString.replaceAll("%3F", "");
+			String finalChoiceString = java.net.URLDecoder.decode(tempChoiceString, "UTF-8");
 			//There was an error when the file name was not in the url format, so had to encode and decode it
-			URL l = new URL(finalur);
-			String downloadPath = "C:\\Downloads\\"+result+".mp3";
-			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
+			URL url = new URL(finalURL);
+			String downloadPath = "C:\\Downloads\\"+finalChoiceString+".mp3";
+			HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());
 			long fileSize = httpConnection.getContentLength();
 			System.out.println("Size : "+fileSize/1048576f+" mb");
-			File abc = new File(downloadPath);
+			File file = new File(downloadPath);
 			TimeUnit.SECONDS.sleep(5);
 			try
 			{	System.out.println("Downloading...");
-				FileUtils.copyURLToFile(l, abc);
-				System.out.println("Download Complete");
+				FileUtils.copyURLToFile(url, abc);
+				System.out.println("Download file");
 			}
-			catch(Exception c)
+			catch(Exception e)
 			{
-				System.out.println("Got an IOException: " + c.getMessage());
+				System.out.println("Got an IOException: " + e.getMessage());
 				System.out.println("Download Failed");
 			}
 			finally{
 				System.exit(0);
 			}
-			in.close();
+			scannerIn.close();
 			
 	}
 }
