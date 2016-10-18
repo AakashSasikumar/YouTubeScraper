@@ -72,28 +72,30 @@ public class YouTubeScraper {
 			TimeUnit.SECONDS.sleep(15);
 			String a = docu.getDocument().queryAll("div[class='col-lg-8']").toString();
 			a=a.substring(584);
+			/*There are three parameters
+			 * 1. The Server number
+			 * 2.The hash
+			 * 3.The file name
+			 * so had to get the url and had to keep substrining to get the parameters
+			 * 
+			 * 
+			 * 
+			 * */
 			a=a.substring(0,210);
-			//System.out.println(a);
 			a=a.substring(20, 99);
-			//System.out.println(a);
 			String[] temp = a.split("&");
-			//System.out.println(temp[0]);
 			String srv = temp[0].substring(3);
-			//System.out.println(srv);
 			String hash = temp[1].substring(9, 68);
 			hash=hash.replace("%",  "");
-			//System.out.println(hash);
-			//String nm = title[ch].replaceAll(" ","%20");
-			//System.out.println(nm);
+			/*found a pattern in the final url that includes all the three parameters, so I generated it on my own
+			 */
 			String finalur = "http://srv"+srv+".listentoyoutube.com/download/"+hash+"==/"+URLEncoder.encode(title[ch],"UTF-8")+".mp3";
-			//System.out.println(finalur);
 			String f = new String(URLEncoder.encode(title[ch], "UTF-8"));
 			f=f.replaceAll("%7C+","");
 			f=f.replaceAll("%22", "");
 			f=f.replaceAll("%3F", "");
 			String result = java.net.URLDecoder.decode(f, "UTF-8");
-			//System.out.println(f);
-			//System.out.println(result);
+			//There was an error when the file name was not in the url format, so had to encode and decode it
 			URL l = new URL(finalur);
 			String path = "C:\\Downloads\\"+result+".mp3";
 			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
@@ -110,6 +112,9 @@ public class YouTubeScraper {
 			{
 				System.out.println("Got an IOException: " + c.getMessage());
 				System.out.println("Download Failed");
+			}
+			finally{
+				System.exit(0);
 			}
 			in.close();
 			
