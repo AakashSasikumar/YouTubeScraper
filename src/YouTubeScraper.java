@@ -19,17 +19,17 @@ import com.ui4j.api.browser.BrowserFactory;
 public class YouTubeScraper {
 
 	public static void main(String[] args) throws IOException, InterruptedException{
-		System.out.println("\t\t\t\t\t\t\tYouTube Downloader");
+		System.out.println("\t\t\t\t\t\tYouTube Downloader");
 		System.out.println("Enter the song name");
 		Scanner in = new Scanner(System.in);
 		String name = in.nextLine();
 		//creating the url necessary to scrape
-		String murl = "https://www.youtube.com/results?search_query="+name;
-		Document website = Jsoup.connect(murl).get();
+		String youtubeURL = "https://www.youtube.com/results?search_query="+name;
+		Document website = Jsoup.connect(youtubeURL).get();
 		//closing in on the target,(class name is lockup-title)
 		Elements subdiv = website.select("h3.yt-lockup-title>a");
 		//System.out.println(subdiv);---checking to see if .select worked 
-		String[] seplinks = new String[subdiv.size()];
+		String[] seperateLinks = new String[subdiv.size()];
 		String[] title = new String[subdiv.size()];
 		int i =0;
 		for(Element temp:subdiv)
@@ -41,19 +41,19 @@ public class YouTubeScraper {
 			}
 			else{
 				//adding the non playlist URL's into my link array
-				seplinks[i] = "https://www.youtube.com"+temp.attr("href");
+				seperateLinks[i] = "https://www.youtube.com"+temp.attr("href");
 				title[i] = temp.text();
 				i++;
 			}
 		}
-			for(int j=0; j<seplinks.length;j++){
+			for(int j=0; j<seperateLinks.length;j++){
 				System.out.println((j+1)+": "+title[j]);
 				//System.out.println(seplinks[j]);---checking to see if the links are proper
 			}
 			System.out.println("Please enter your choice");
-			int ch = in.nextInt();
-			ch--;
-			String userchoice = seplinks[ch];
+			int choice = in.nextInt();
+			choice--;
+			String userchoice = seperateLinks[choice];
 			//System.out.println(userchoice);---final URL selected
 			
 			
@@ -69,62 +69,44 @@ public class YouTubeScraper {
 			process.query("input[type='text']").get().setValue(userchoice);
 			process.query("input[type='submit']").get().click();
 			//copied over the url and clicked the button
-			TimeUnit.SECONDS.sleep(15);//delay to make it work for slow networks
-			String a = docu.getDocument().queryAll("div[class='col-lg-8']").toString();
-			/*There was a problem, ui4j doesnt seem to have the capability to get the current URL, so
-			 * so, had to get the anchor tag for the url, unfortunately that had no class name
-			 * so i had to get the entire html and keep string slicing to get the particular url*/
-			a=a.substring(584);
-			//System.out.println(a);
+			TimeUnit.SECONDS.sleep(20);//delay to make it work for slow networks
+			String ur =(String) docu.executeScript("window.location.href");//got the current URLf
+			ur=ur.substring(49, ur.length());
 			/*There are three parameters
-			 * 1. The Server number
-			 * 2.The hash
-			 * 3.The file name
-			 * so had to get the url and had to keep substringing to get the parameters
-			 * 
-			 * 
-			 * 
-			 * */
-			a=a.substring(0,210);
-			//System.out.println(a);
-			a=a.substring(20, 99);
-			//System.out.println(a);
-			String[] temp = a.split("&");
-			//System.out.println(temp[0]+temp);
-			String srv = temp[0].substring(3);
-			String hash = temp[1].substring(9, 68);
-			hash=hash.replace("%",  "");
-			/*found a pattern in the final url that includes all the three parameters, so I generated it on my own
+  			 * 1. The Server number
+  			 * 2.The hash
+ 			 * 3.The file name
+ 			 * so i got the url and split it at '&'
+   			 */
+			String[] segments = ur.split("&");
+			segments[1]=segments[1].substring(5, segments[1].length());
+			/* segments[0] is the server number
+			 * segments[1] is the hash code
+			 * segments[2] is the file name
 			 */
-			String finalur = "http://srv"+srv+".listentoyoutube.com/download/"+hash+"==/"+URLEncoder.encode(title[ch],"UTF-8")+".mp3";
-			String f = new String(URLEncoder.encode(title[ch], "UTF-8"));
-			f=f.replaceAll("%7C+","");
-			f=f.replaceAll("%22", "");
-			f=f.replaceAll("%3F", "");
-			String result = java.net.URLDecoder.decode(f, "UTF-8");
-			System.out.println(finalur);
-			//There was an error when the file name was not in the url format, so had to encode and decode it
-			URL l = new URL(finalur);			
-			String path = ""+result+".mp3";
-			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
+			segments[1]=segments[1].replaceAll("%253D%253D","");
+			segments[2]=segments[2].substring(5, segments[2].length());
+			String finalur = "http://"+segments[0]+".listentoyoutube.com/download/"+segments[1]+"==/"+segments[2];
+			URL url = new URL(finalur);
+			HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());//this connection is to get the file size
 			long fileSize = httpConnection.getContentLength();
-			System.out.println("Size : "+fileSize/1048576f+" mb");
-			File abc = new File(path);
+			System.out.println(title[choice]+"\t\tSize : "+fileSize/1048576f+" mb");//----this will calcluate the total file size in mb
+			String path = ""+title[choice]+".mp3";//downloads in the file where the jar file is located
+			File file = new File(path);
 			TimeUnit.SECONDS.sleep(5);
 			try
 			{	System.out.println("Downloading....");
-				FileUtils.copyURLToFile(l, abc);
+				FileUtils.copyURLToFile(url, file);
 				System.out.println("Download Complete");
 			}
-			catch(Exception c)
+			catch(Exception e)
 			{
-				System.out.println("Got an IOException: " + c.getMessage());
+				System.out.println("Got an IOException: " + e.getMessage());
 				System.out.println("Download Failed");
 			}
 			finally{
 				System.exit(0);
 			}
-			in.close();
-			
+			in.close();			
 	}
 }
