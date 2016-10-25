@@ -70,7 +70,11 @@ public class YouTubeScraper {
 			process.query("input[type='submit']").get().click();
 			//copied over the url and clicked the button
 			TimeUnit.SECONDS.sleep(20);//delay to make it work for slow networks
-			String ur =(String) docu.executeScript("window.location.href");//got the current URLf
+			String ur =(String) docu.executeScript("window.location.href");//got the current URL
+			if(ur.contains("captcha")){//found a temporary solution for the captcha issue
+				System.out.println("Please go to http://www.listentoyoutube.com/captcha.php and prove you're not a robot and run the program again");
+				System.exit(0);
+			}
 			ur=ur.substring(49, ur.length());
 			/*There are three parameters
   			 * 1. The Server number
