@@ -91,7 +91,11 @@ public class YouTubeScraper {
 			HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());//this connection is to get the file size
 			long fileSize = httpConnection.getContentLength();
 			System.out.println(title[choice]+"\t\tSize : "+fileSize/1048576f+" mb");//----this will calcluate the total file size in mb
-			String path = ""+title[choice]+".mp3";//downloads in the file where the jar file is located
+			segments[2]=segments[2].replace("%7C", "");
+			segments[2]=segments[2].replace("%22", "");
+			segments[2]=segments[2].replace("%3F", "");
+			segments[2]=java.net.URLDecoder.decode(segments[2], "UTF-8");//java doesnt allow ", ?, | to be in the file name
+			String path = ""+segments[2]+".mp3";//downloads in the file where the jar file is located
 			File file = new File(path);
 			TimeUnit.SECONDS.sleep(5);
 			try
