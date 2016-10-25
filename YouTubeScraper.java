@@ -70,53 +70,43 @@ public class YouTubeScraper {
 			process.query("input[type='text']").get().setValue(userchoice);
 			process.query("input[type='submit']").get().click();
 			TimeUnit.SECONDS.sleep(15);
-			String a = docu.getDocument().queryAll("div[class='col-lg-8']").toString();
-			a=a.substring(584);
+			String ur =(String) docu.executeScript("window.location.href");
+			ur=ur.substring(49, ur.length());
 			/*There are three parameters
-			 * 1. The Server number
-			 * 2.The hash
-			 * 3.The file name
-			 * so had to get the url and had to keep substrining to get the parameters
-			 * 
-			 * 
-			 * 
-			 * */
-			a=a.substring(0,210);
-			a=a.substring(20, 99);
-			String[] temp = a.split("&");
-			String srv = temp[0].substring(3);
-			String hash = temp[1].substring(9, 68);
-			hash=hash.replace("%",  "");
-			/*found a pattern in the final url that includes all the three parameters, so I generated it on my own
+  			 * 1. The Server number
+  			 * 2.The hash
+ 			 * 3.The file name
+ 			 * so i got the url and split it at '&'
+   			 */
+			String[] segments = ur.split("&");
+			segments[1]=segments[1].substring(5, segments[1].length());
+			/* segments[0] is the server number
+			 * segments[1] is the hash code
+			 * segments[2] is the file name
 			 */
-			String finalur = "http://srv"+srv+".listentoyoutube.com/download/"+hash+"==/"+URLEncoder.encode(title[ch],"UTF-8")+".mp3";
-			String f = new String(URLEncoder.encode(title[ch], "UTF-8"));
-			f=f.replaceAll("%7C+","");
-			f=f.replaceAll("%22", "");
-			f=f.replaceAll("%3F", "");
-			String result = java.net.URLDecoder.decode(f, "UTF-8");
-			//There was an error when the file name was not in the url format, so had to encode and decode it
-			URL l = new URL(finalur);
-			String downloadPath = "C:\\Downloads\\"+result+".mp3";
-			HttpURLConnection httpConnection = (HttpURLConnection) (l.openConnection());
+			segments[1]=segments[1].replaceAll("%253D%253D","");
+			segments[2]=segments[2].substring(5, segments[2].length());
+			String finalur = "http://"+segments[0]+".listentoyoutube.com/download/"+segments[1]+"==/"+segments[2];
+			URL url = new URL(finalur);
+			HttpURLConnection httpConnection = (HttpURLConnection) (url.openConnection());//this connection is to get the file size
 			long fileSize = httpConnection.getContentLength();
-			System.out.println("Size : "+fileSize/1048576f+" mb");
-			File abc = new File(downloadPath);
+			System.out.println(title[choice]+"\t\tSize : "+fileSize/1048576f+" mb");//----this will calcluate the total file size in mb
+			String path = ""+title[choice]+".mp3";//downloads in the file where the jar file is located
+			File file = new File(path);
 			TimeUnit.SECONDS.sleep(5);
 			try
-			{	System.out.println("Downloading...");
-				FileUtils.copyURLToFile(l, abc);
+			{	System.out.println("Downloading....");
+				FileUtils.copyURLToFile(url, file);
 				System.out.println("Download Complete");
 			}
-			catch(Exception c)
+			catch(Exception e)
 			{
-				System.out.println("Got an IOException: " + c.getMessage());
+				System.out.println("Got an IOException: " + e.getMessage());
 				System.out.println("Download Failed");
 			}
 			finally{
 				System.exit(0);
 			}
-			in.close();
-			
+			in.close();			
 	}
 }
