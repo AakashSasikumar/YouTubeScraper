@@ -19,8 +19,6 @@ Future Plans:
 
 4. Add feature to let user choose download location
 
-5. 
-
 
 How to use the jar file:
 
