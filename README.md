@@ -32,5 +32,11 @@ How to use the non GUI jar file:
 
 How to use the GUI jar file: 
 
-1. Download it.
-2. Double click it
+1. Download it
+2. Open it, UI is pretty simple
+3. Enter the song you want to download
+4. Click enter, or press the search button
+5. After a second or so, the table will get filled with results
+6. Click on anyone of those
+7. Choose the download location by clicking the choose button
+8. Click the download button and wait a few minutes(speed varies with internet connection speed)
