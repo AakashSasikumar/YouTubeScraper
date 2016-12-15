@@ -20,7 +20,7 @@ Future Plans:
 4. Add feature to let user choose download location
 
 
-How to use the jar file:
+How to use the non GUI jar file:
 
 1. Download it, store it wherever you want to
 
@@ -29,3 +29,8 @@ How to use the jar file:
 3. Follow the directions
 
 4. The song will download in the same directory as the jar file.
+
+How to use the GUI jar file: 
+
+1. Download it.
+2. Double click it
