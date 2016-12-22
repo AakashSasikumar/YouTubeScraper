@@ -19,12 +19,15 @@ public class SelectSong extends JPanel {
         temp.setLayout(new FlowLayout());
         temp.add(selectSong);
         selectionTable = new JTable();
+        selectionTable.setPreferredScrollableViewportSize(selectionTable.getPreferredSize());
+        selectionTable.setFillsViewportHeight(true);
+        //selectionTable.setEnabled(false);
         add(temp, BorderLayout.NORTH);
         add(new JScrollPane(selectionTable), BorderLayout.CENTER);
 
 
     }
-    static void populateTale(ArrayList<String> title){
+    static void populateTable(ArrayList<String> title){
         DefaultTableModel dtm = new DefaultTableModel();
         dtm.addColumn("Select From Here", title.toArray());
         selectionTable.setModel(dtm);
