@@ -16,9 +16,13 @@ public class TextAreaAndProgressBar extends JPanel {
         add(new JScrollPane(output), BorderLayout.NORTH);
         add(progressBar, BorderLayout.SOUTH);
 
+
     }
     static void addText(String text){
         output.append(text+"\n");
+    }
+    static String returnText(){
+        return output.getText();
     }
 
 }
