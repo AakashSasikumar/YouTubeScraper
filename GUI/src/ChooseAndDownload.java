@@ -27,7 +27,7 @@ public class ChooseAndDownload extends JPanel{
                 int fileResult = jfc.showOpenDialog(null);
                 if (fileResult == JFileChooser.APPROVE_OPTION) {
                     path = jfc.getSelectedFile().getPath();
-                    TextAreaAndProgressBar.addText(path);
+                    TextAreaAndProgressBar.addText("You chose to download at"+path);
                     ScrapeListenToYouTube.path=path;
                 }
             }
@@ -41,7 +41,11 @@ public class ChooseAndDownload extends JPanel{
                 //System.out.println(index);
                 String link = ScrapeYouTube.links.get(index);
                 TextAreaAndProgressBar.addText("Downloading "+link+"...");
-                ScrapeListenToYouTube.startScrape(link);
+                //ScrapeListenToYouTube.startScrape(link);
+                ScrapeListenToYouTubeThread ob = new ScrapeListenToYouTubeThread();
+                ob.setLink(link);
+                ob.execute();
+
             }
         });
         add(chooseFile);
