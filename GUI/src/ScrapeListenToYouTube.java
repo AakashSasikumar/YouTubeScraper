@@ -2,6 +2,7 @@ import com.ui4j.api.browser.BrowserEngine;
 import com.ui4j.api.browser.BrowserFactory;
 import org.apache.commons.io.FileUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +17,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ScrapeListenToYouTube {
     static String path;
+    static String finalDownloadLink;
+    static String finalPath;
     static void startScrape(String link){
-        TextAreaAndProgressBar.addText("Contacting Servers...");
+        TextAreaAndProgressBar.addText("Contacting Servers...\n Please Wait this may take time depending on your internet speed");
         BrowserEngine browser = BrowserFactory.getWebKit();
         //java.util.logging.Logger.getLogger("com.ui4j").setLevel(Level.OFF);
         com.ui4j.api.browser.Page docu = browser.navigate("http://www.listentoyoutube.com/");
@@ -26,7 +29,7 @@ public class ScrapeListenToYouTube {
         process.query("input[type='submit']").get().click();
         //copied over the url and clicked the button
         try {
-            TimeUnit.SECONDS.sleep(20);//delay to make it work for slow networks
+            TimeUnit.SECONDS.sleep(10);//delay to make it work for slow networks
         } catch (InterruptedException e) {
             TextAreaAndProgressBar.addText("Woops, internal error occurred, please try again...");
             e.printStackTrace();
@@ -52,6 +55,7 @@ public class ScrapeListenToYouTube {
         segments[1]=segments[1].replaceAll("%253D%253D","");
         segments[2]=segments[2].substring(5, segments[2].length());
         String finalur = "http://"+segments[0]+".listentoyoutube.com/download/"+segments[1]+"==/"+segments[2];
+        finalDownloadLink=finalur;
         URL url = null;
         try {
             url = new URL(finalur);
@@ -88,25 +92,14 @@ public class ScrapeListenToYouTube {
             System.out.println(path);
 
         }*/
-        //String path1 = path+"\\"+segments[2]+".mp3";//downloads in the file where the jar file is located
-        path=path+"\\"+segments[2]+"";
-        TextAreaAndProgressBar.addText("Downloading at: "+path);
-        File file = new File(path);
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            TextAreaAndProgressBar.addText("Woops, internal error occurred, please try again...");
-            e.printStackTrace();
-        }
-        try
-        {	TextAreaAndProgressBar.addText("Downloading....");
-            FileUtils.copyURLToFile(url, file);
-            TextAreaAndProgressBar.addText("Download Complete. Enjoy!");
-        }
-        catch(Exception e)
-        {
-            TextAreaAndProgressBar.addText("Got an IOException: " + e.getMessage());
-            TextAreaAndProgressBar.addText("Download Failed");
-        }
+        String path1 = path+"\\"+segments[2];//downloads in the file where the jar file is located
+        //path=path+"\\"+segments[2]+"";
+        finalPath=path1;
+        SwingWorker<Void, Void> ob = new DownloadThread();
+        ob.execute();
+
+
+
+
     }
 }
