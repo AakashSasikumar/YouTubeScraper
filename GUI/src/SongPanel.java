@@ -28,6 +28,7 @@ public class SongPanel extends JPanel {
                 //ScrapeYouTube.startScrape(songName);
                // System.out.println(song);
                 SwingWorker<Void, Void> ob = new ScrapeYouTubeThread();
+                TextAreaAndProgressBar.setLoading();
                 ob.execute();
             }
         });
@@ -38,6 +39,7 @@ public class SongPanel extends JPanel {
 
                 songName = enterSong.getText();
                 SwingWorker<Void, Void> ob = new ScrapeYouTubeThread();
+                TextAreaAndProgressBar.setLoading();
                 ob.execute();
 
                 //ScrapeYouTube.startScrape(songName);
