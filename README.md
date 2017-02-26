@@ -28,7 +28,7 @@ a simple webscraping code developed in java using jsoup and ui4j libraries to do
 
 4. The song will download in the same directory as the jar file.
 
-**How to use the GUI jar file: **
+**How to use the GUI jar file:**
 
 1. Download it
 2. Open it, UI is pretty simple
