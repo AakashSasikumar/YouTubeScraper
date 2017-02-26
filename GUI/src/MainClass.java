@@ -9,7 +9,7 @@ public class MainClass {
             @Override
             public void run() {
                 try {
-                    new GUI();
+                    new GUI();//calling the GUI
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (UnsupportedLookAndFeelException e) {
