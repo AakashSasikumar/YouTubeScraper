@@ -19,6 +19,7 @@ public class ScrapeListenToYouTube {
     static String path;
     static String finalDownloadLink;
     static String finalPath;
+    static long size;
     static void startScrape(String link){
         TextAreaAndProgressBar.addText("Contacting Servers...\n Please Wait this may take time depending on your internet speed");
         BrowserEngine browser = BrowserFactory.getWebKit();
@@ -53,6 +54,9 @@ public class ScrapeListenToYouTube {
 			 * segments[2] is the file name
 			 */
         segments[1]=segments[1].replaceAll("%253D%253D","");
+        //System.out.println(segments[2]);
+        segments[2]=segments[2].replaceAll("\\*", "");
+        //System.out.println(segments[2]);
         segments[2]=segments[2].substring(5, segments[2].length());
         String finalur = "http://"+segments[0]+".listentoyoutube.com/download/"+segments[1]+"==/"+segments[2];
         finalDownloadLink=finalur;
@@ -71,30 +75,24 @@ public class ScrapeListenToYouTube {
             e.printStackTrace();
         }
         long fileSize = httpConnection.getContentLength();
-        TextAreaAndProgressBar.addText(ScrapeYouTube.titles.get(SelectSong.selectionTable.getSelectedRow())+"\t\t\t Total Size : "+fileSize/1048576f+" mb");//----this will calcluate the total file size in mb
+        size = fileSize/1048576;
+        TextAreaAndProgressBar.addText(ScrapeYouTube.titles.get(SelectSong.selectionTable.getSelectedRow())+"\t\t\t Total Size : "+size+" mb");//----this will calcluate the total file size in mb
         segments[2]=segments[2].replace("%7C", "");
         segments[2]=segments[2].replace("%22", "");
         segments[2]=segments[2].replace("%3F", "");
+        segments[2]=segments[2].replaceAll("\\*", "");
         try {
             segments[2]=java.net.URLDecoder.decode(segments[2], "UTF-8");//apache commons doesnt allow ", ?, | to be in the file name
         } catch (UnsupportedEncodingException e) {
             TextAreaAndProgressBar.addText("Woops, internal error occurred, please try again...");
             e.printStackTrace();
         }
-        // String path = new String();
-        /*JFileChooser jfc = new JFileChooser();
-        jfc.setCurrentDirectory(new java.io.File("."));
-        jfc.setDialogTitle("Choose where you wanna download");
-        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int fileResult = jfc.showOpenDialog(null);
-        if (fileResult == JFileChooser.APPROVE_OPTION) {
-            path = jfc.getSelectedFile().getPath();
-            System.out.println(path);
 
-        }*/
         String path1 = path+"\\"+segments[2];//downloads in the file where the jar file is located
-        //path=path+"\\"+segments[2]+"";
         finalPath=path1;
+      //  System.out.println(finalPath);
+      //  System.out.println(finalDownloadLink);
+        TextAreaAndProgressBar.startProgressBar();
         SwingWorker<Void, Void> ob = new DownloadThread();
         ob.execute();
 
