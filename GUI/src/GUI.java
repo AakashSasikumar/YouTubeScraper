@@ -25,7 +25,6 @@ public class GUI extends JFrame {
         chooseAndDownload = new ChooseAndDownload();
         textAreaAndProgressBar = new TextAreaAndProgressBar();
         southPart.setLayout(new BorderLayout());
-
         add(songPanel, BorderLayout.NORTH);
         add(selectSong, BorderLayout.CENTER);
         southPart.add(chooseAndDownload, BorderLayout.NORTH);
@@ -34,6 +33,8 @@ public class GUI extends JFrame {
         setSize(600, 1000);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        setLocationRelativeTo(null);//to make it centered
+
 
 
 
