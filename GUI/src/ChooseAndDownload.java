@@ -14,7 +14,7 @@ public class ChooseAndDownload extends JPanel{
         setLayout(new FlowLayout());
         chooseFile = new JLabel("Choose File: ");
 
-        choose = new JButton("Choose");
+        choose = new JButton("Choose Location");
         download = new JButton("Download");
         choose.addActionListener(new ActionListener() {
             @Override
