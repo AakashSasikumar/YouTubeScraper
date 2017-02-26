@@ -21,6 +21,7 @@ public class SelectSong extends JPanel {
         selectionTable = new JTable();
         selectionTable.setPreferredScrollableViewportSize(selectionTable.getPreferredSize());
         selectionTable.setFillsViewportHeight(true);
+        selectionTable.setRowHeight(21);
         //selectionTable.setEnabled(false);
         add(temp, BorderLayout.NORTH);
         add(new JScrollPane(selectionTable), BorderLayout.CENTER);
