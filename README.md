@@ -1,7 +1,7 @@
 # YouTubeScraper
 a simple webscraping code developed in java using jsoup and ui4j libraries to download something in youtube and convert it into high quality audio format(mp3). It can be used as a song downloader.
 
-Requirements:
+**Requirements:**
 
 1. Java 1.8
 
@@ -9,7 +9,7 @@ Requirements:
 
 3. UI4J Library
 
-Future Plans:
+**Future Plans:**
 
 1. Fetch album art and add it to the downloaded mp3 file(using id3 editing libraries)
 
@@ -18,7 +18,7 @@ Future Plans:
 3. Queueing(Multiple songs)
 
 
-How to use the non GUI jar file:
+**How to use the non GUI jar file:**
 
 1. Download it, store it wherever you want to
 
@@ -28,7 +28,7 @@ How to use the non GUI jar file:
 
 4. The song will download in the same directory as the jar file.
 
-How to use the GUI jar file: 
+**How to use the GUI jar file: **
 
 1. Download it
 2. Open it, UI is pretty simple
