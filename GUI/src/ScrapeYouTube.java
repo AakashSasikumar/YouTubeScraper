@@ -51,7 +51,7 @@ public class ScrapeYouTube {
         }
         titles = new ArrayList<>(Arrays.asList(title));
         links = new ArrayList<>(Arrays.asList(seperateLinks));
-        SelectSong.populateTale(titles);
+        SelectSong.populateTable(titles);
 
     }
 }
