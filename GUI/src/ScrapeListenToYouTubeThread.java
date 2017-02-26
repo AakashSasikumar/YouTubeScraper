@@ -3,16 +3,11 @@ import javax.swing.*;
 /**
  * Created by Aakash on 12/22/2016.
  */
-public class ScrapeListenToYouTubeThread extends SwingWorker<Void, Void> {
-    static String link;
+public class ScrapeYouTubeThread extends SwingWorker<Void, Void>{
+
     @Override
     protected Void doInBackground() throws Exception {
-        ScrapeListenToYouTube.startScrape(link);
-
+        ScrapeYouTube.startScrape(SongPanel.songName);
         return null;
     }
-    void setLink(String a){
-        link=a;
-    }
-
 }
