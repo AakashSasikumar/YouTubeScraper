@@ -17,8 +17,6 @@ Future Plans:
 
 3. Queueing(Multiple songs)
 
-4. Add feature to let user choose download location
-
 
 How to use the non GUI jar file:
 
@@ -26,7 +24,7 @@ How to use the non GUI jar file:
 
 2. Execute it using the java -jar command in terminal
 
-3. Follow the directions
+3. Follow the instructions
 
 4. The song will download in the same directory as the jar file.
 
@@ -38,5 +36,5 @@ How to use the GUI jar file:
 4. Click enter, or press the search button
 5. After a second or so, the table will get filled with results
 6. Click on anyone of those
-7. Choose the download location by clicking the choose button
+7. Choose the download location by clicking the choose location button
 8. Click the download button and wait a few minutes(speed varies with internet connection speed)
